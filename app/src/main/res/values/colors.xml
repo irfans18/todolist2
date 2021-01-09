@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#222831</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!--<color name="pantone331c">#05c3de</color>
+
+    &lt;!&ndash;pallete one&ndash;&gt;
+    <color name="pantoneDark331c">#017787</color>
+    <color name="pantoneOne">#01B0C8</color>&lt;!&ndash;3DAEBD&ndash;&gt;
+    <color name="pantoneTwo">#30CBE1</color>
+    <color name="pantoneTree">#5BD4E5</color>
+    <color name="pantoneTransparent">#6605c3de</color>
+    <color name="pantoneDarkTransparent">#8c017787</color>
+    &lt;!&ndash;pallete two&ndash;&gt;
+    <color name="palleteDark">#29757f</color>
+    <color name="palleteOne">#bfd6d9</color>
+    <color name="palleteDarkTransparent">#8c29757F</color>
+    &lt;!&ndash;Whats app color&ndash;&gt;
+    <color name="waPrimary">#128C7E</color>
+    <color name="waPrimaryDark">#075e54</color>
+    <color name="waText">#41a290</color>
+    <color name="waLightBackground">#a7e6d7</color>
+    <color name="waTransparent">#8c128C7E</color>
+    <color name="detailBackgroud">#37000000</color>
+    <color name="textWhite">#FFFAFAFA</color>
+    &lt;!&ndash;<color name="textWhite">#FFFFFFFF</color>&ndash;&gt;-->
+
+    <!--palettes darkmode-->
+    <color name="dark60">#1b262c</color>
+    <color name="dark30">#0f4c75</color>
+    <color name="dark10">#3282b8</color>
+    <color name="dark5">#bbe1fa</color>
+
+    <!--palettes darkmode.v2-->
+    <color name="v2dark60">#222831</color>
+    <color name="v2dark30">#393e46</color>
+    <color name="v2dark10">#00adb5</color>
+    <color name="v2dark5">#EEEEEE</color>
+
+    <!--Whats app color-->
+    <color name="waPrimary">#128C7E</color>
+    <color name="waPrimaryDark">#075e54</color>
+    <color name="waText">#41a290</color>
+    <color name="waLightBackground">#a7e6d7</color>
+    <color name="waTransparent">#8c128C7E</color>
+    <color name="detailBackgroud">#37000000</color>
+    <color name="textWhite">#FFFAFAFA</color>
+
+
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ThemeWA" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/waPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/waPrimaryDark</item>
+        <item name="tabBackgroundColor">@color/waPrimaryDark</item>
+        <item name="toolbarBackgroundColor">@color/waPrimaryDark</item>
+        <item name="textDarkColor">@color/waPrimaryDark</item>
+        <item name="textTabColor">@color/waText</item>
+        <item name="textWhiteColor">@color/textWhite</item>
+        <item name="detailBackground">@color/detailBackgroud</item>
+        <item name="imageTransparentOverlay">@color/waTransparent</item>
+    </style>
+
+</resources>
