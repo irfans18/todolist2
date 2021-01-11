@@ -1,6 +1,8 @@
 package com.irfans.todolist2.modul.newtask;
 
+import com.irfans.todolist2.data.model.SuccessMessage;
 import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.utils.RequestCallback;
 
 /**
  * Created by fahrul on 13/03/19.
@@ -17,11 +19,17 @@ public class NewTaskPresenter implements NewTaskContract.Presenter{
     public void start() {}
 
     @Override
-    public void saveData(final String title, final String description, String date){
-        Task newTask = new Task("3", title, description, date);
-        //save new task
-        //then go back to task list
-        view.redirectToTaskList();
-    }
+    public void saveData(String title, String description) {
+        view.requestNewTask(title, description, new RequestCallback<SuccessMessage>() {
+            @Override
+            public void requestSuccess(SuccessMessage data) {
+                view.redirectToTaskList();
+            }
 
+            @Override
+            public void requestFailed(String errorMessage) {
+
+            }
+        });
+    }
 }

@@ -8,7 +8,7 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/v2dark60"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp">
 

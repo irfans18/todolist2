@@ -10,9 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.irfans.todolist2.R;
-import com.irfans.todolist2.data.source.session.SessionRepository;
-import com.irfans.todolist2.data.source.session.UserSessionRepository;
 import com.irfans.todolist2.modul.login.LoginActivity;
+import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
 import com.irfans.todolist2.utils.SharedPreferencesUtil;
 
 public abstract class BaseFragmentHolderActivity extends BaseActivity {
@@ -23,7 +22,7 @@ public abstract class BaseFragmentHolderActivity extends BaseActivity {
     protected ImageButton btBack;
     protected View vMenuBarShadow;
     protected RelativeLayout rlActivityFragmentHolder;
-    protected SessionRepository sessionRepository;
+    protected TokenSessionRepository sessionRepository;
 
     @Override
     protected void initializeView() {
@@ -36,19 +35,19 @@ public abstract class BaseFragmentHolderActivity extends BaseActivity {
         vMenuBarShadow = findViewById(R.id.vMenuBarShadow);
         rlActivityFragmentHolder = findViewById(R.id.rlActivityFragmentHolder);
 
-        btBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logOut();
-//                onBackPressed();
-            }
-
-            private void logOut() {
-                sessionRepository.destroy();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+//        btBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                logOut();
+////                onBackPressed();
+//            }
+//
+//            private void logOut() {
+//                sessionRepository.clear();
+//                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override

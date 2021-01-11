@@ -12,11 +12,11 @@
 
         <activity android:name=".FirstActivity" />
         <activity android:name=".SecondActivity" />
-        <activity android:name=".modul.todolist.TodoListActivity" />
+<!--        <activity android:name=".modul.todolist.TodoListActivity"/>-->
         <activity android:name=".modul.newtask.NewTaskActivity" />
         <activity android:name=".modul.edittask.EditTaskActivity" />
         <activity android:name=".modul.profile.ProfileActivity" />
-        <activity android:name=".modul.login.LoginActivity">
+        <activity android:name=".modul.todolist.TodoListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

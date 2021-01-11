@@ -8,12 +8,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.irfans.todolist2.R;
 import com.irfans.todolist2.data.model.Task;
 
 public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerViewAdapterTodolist.MyViewHolder> {
-    private static ArrayList<Task> mDataset;
+    private static List<Task> mDataset;
     private static MyClickListener myClickListener;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -33,13 +34,13 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public RecyclerViewAdapterTodolist(ArrayList<Task> myDataset) {
+    public RecyclerViewAdapterTodolist(List<Task> myDataset) {
         mDataset = myDataset;
     }
 
     @Override
     public com.irfans.todolist2.utils.RecyclerViewAdapterTodolist.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_item_todolist, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }

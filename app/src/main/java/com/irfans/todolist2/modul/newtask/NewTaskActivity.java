@@ -3,10 +3,14 @@ package com.irfans.todolist2.modul.newtask;
 import android.view.View;
 
 import com.irfans.todolist2.base.BaseFragmentHolderActivity;
+import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
+import com.irfans.todolist2.utils.SharedPreferences.TokenSharedUtil;
+import com.irfans.todolist2.utils.SharedPreferences.UtilProvider;
 
 
 public class NewTaskActivity extends BaseFragmentHolderActivity {
     NewTaskFragment newTaskFragment;
+    TokenSharedUtil tokenSessionRepository;
     private final int UPDATE_REQUEST = 2019;
 
     @Override
@@ -18,7 +22,8 @@ public class NewTaskActivity extends BaseFragmentHolderActivity {
 //        ivIcon.setImageResource(R.drawable.....);
         ivIcon.setVisibility(View.VISIBLE);
 
-        newTaskFragment = new NewTaskFragment();
+        tokenSessionRepository = UtilProvider.getTokenSharedUtil();
+        newTaskFragment = new NewTaskFragment(tokenSessionRepository);
         setCurrentFragment(newTaskFragment, false);
     }
 

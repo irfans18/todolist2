@@ -3,23 +3,35 @@ package com.irfans.todolist2.data.model;
 import com.irfans.todolist2.base.BaseModel;
 
 public class Task extends BaseModel {
-    private String id;
+    private int id;
     private String title;
     private String description;
-    private String date;
+    private String deadline;
+    private boolean privacy;
+    private boolean checked;
 
-    public Task(String id, String title, String description, String date) {
+    public Task(int id, String title, String description, String deadline, boolean privacy, boolean checked) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.date = date;
+        this.deadline = deadline;
+        this.privacy = privacy;
+        this.checked = checked;
     }
 
-    public String getId() {
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -39,11 +51,19 @@ public class Task extends BaseModel {
         this.description = description;
     }
 
-    public String getDate() {
-        return date;
+    public String getDeadline() {
+        return deadline;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public boolean isPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(boolean privacy) {
+        this.privacy = privacy;
     }
 }

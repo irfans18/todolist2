@@ -1,38 +1,36 @@
 package com.irfans.todolist2.modul.login;
 
-import com.irfans.todolist2.data.model.User;
-import com.irfans.todolist2.data.source.session.SessionRepository;
+import com.irfans.todolist2.utils.RequestCallback;
 
-/**
- * Created by fahrul on 13/03/19.
- */
+public class LoginPresenter implements LoginContract.Presenter{
+    private final LoginActivity activity;
+    private final LoginContract.View view;
 
-public class LoginPresenter implements com.irfans.todolist2.modul.login.LoginContract.Presenter{
-    private final com.irfans.todolist2.modul.login.LoginContract.View view;
-    private final SessionRepository sessionRepository;                                              //new
-
-    public LoginPresenter(com.irfans.todolist2.modul.login.LoginContract.View view, SessionRepository sessionRepository) {           //add
+    public LoginPresenter(LoginContract.View view, LoginActivity activity) {
         this.view = view;
-        this.sessionRepository = sessionRepository;                                                 //new
+        this.activity = activity;
     }
 
     @Override
     public void start() {
-        if(sessionRepository.getSessionData() != null){                                             //new
-            view.redirectToProfile();                                                               //jika sudah login langsung masuk profile
-        }
+        view.setItems();
     }
 
     @Override
-    public void performLogin(final String email, final String password){
-        //proses login
+    public void performLogin(String email, String password){
+        view.requestLogin(email, password, new RequestCallback<LoginResponse>() {
+            @Override
+            public void requestSuccess(LoginResponse data) {
+                view.saveToken(data.token);
+                view.saveUser(data.user);
+                view.redirectToHome();
+                view.showSuccessMessage();
+            }
 
-        //if login success
-        User loggedUser = new User(email, "TOKEN123456");                                    //new
-        sessionRepository.setSessionData(loggedUser);                                               //new
-
-        //then call redirect to profile
-        view.redirectToProfile();
+            @Override
+            public void requestFailed(String errorMessage) {
+                view.showFailedMessage(errorMessage);
+            }
+        });
     }
-
 }

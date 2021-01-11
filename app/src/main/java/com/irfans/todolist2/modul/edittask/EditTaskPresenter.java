@@ -1,6 +1,8 @@
 package com.irfans.todolist2.modul.edittask;
 
+import com.irfans.todolist2.data.model.SuccessMessage;
 import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.utils.RequestCallback;
 
 /**
  * Created by fahrul on 13/03/19.
@@ -18,19 +20,32 @@ public class EditTaskPresenter implements EditTaskContract.Presenter{
     }
 
     @Override
-    public void saveData(final String title, final String description, String date){
-//        Task newTask = new Task("3", title, description);
-        //save new task
-        //then go back to task list
-        view.redirectToTaskList();
+    public void saveData(String title, String description) {
+        view.requestEditTask(title, description, new RequestCallback<SuccessMessage>() {
+            @Override
+            public void requestSuccess(SuccessMessage data) {
+                view.redirectToTaskList();
+            }
+
+            @Override
+            public void requestFailed(String errorMessage) {
+
+            }
+        });
     }
 
     @Override
-    public void loadData(String id) {
-        //load data task by id
-        //then send data to fragment
-//        Task task = new Task("3", "title of taskIndex:"+id, "description of taskIndex:"+id);
-//        view.showData(task);
-    }
+    public void loadData() {
+        view.requestTaskDetail(new RequestCallback<EditTaskResponse>() {
+            @Override
+            public void requestSuccess(EditTaskResponse data) {
+                view.setResult(data.getTask());
+            }
 
+            @Override
+            public void requestFailed(String errorMessage) {
+
+            }
+        });
+    }
 }

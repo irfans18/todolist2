@@ -1,56 +1,55 @@
 package com.irfans.todolist2.modul.todolist;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.irfans.todolist2.R;
 import com.irfans.todolist2.base.BaseFragment;
 import com.irfans.todolist2.data.model.Task;
 import com.irfans.todolist2.databinding.FragmentHomeBinding;
 import com.irfans.todolist2.modul.edittask.EditTaskActivity;
 import com.irfans.todolist2.modul.newtask.NewTaskActivity;
-import com.irfans.todolist2.utils.TaskAdapter;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import com.irfans.todolist2.utils.RecyclerViewAdapterTodolist;
+import com.irfans.todolist2.utils.RequestCallback;
+import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
+import com.irfans.todolist2.utils.SharedPreferences.TokenSharedUtil;
+import com.irfans.todolist2.utils.myURL;
 
 
 /**
  * Created by fahrul on 13/03/19.
  */
 
-public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListContract.Presenter> implements TodoListContract.View {
+public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListContract.Presenter> implements TodoListContract.View, View.OnClickListener {
 
+    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private final TokenSharedUtil tokenSessionRepository;
 
-    DatabaseReference reference;
-    ArrayList<Task> lists;
-    TaskAdapter taskAdapter;
-//    @BindView(R.id.addTask_btn)
+
     FragmentHomeBinding binding;
 
 
-    public TodoListFragment() {
+    public TodoListFragment(TokenSharedUtil tokenSessionRepository) {
+        this.tokenSessionRepository = tokenSessionRepository;
     }
 
     @Nullable
@@ -62,9 +61,13 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
         mPresenter = new TodoListPresenter(this);
         mPresenter.start();
 
+
+        binding.homeTasksRv.setHasFixedSize(true);
 //        mRecyclerView = fragmentView.findViewById(R.id.home_tasks_rv);
 //        mRecyclerView.setHasFixedSize(true);
-//        mLayoutManager = new LinearLayoutManager(activity);
+        mLayoutManager = new LinearLayoutManager(activity);
+        binding.homeTasksRv.setLayoutManager(mLayoutManager);
+        mPresenter.getData(1);
 //        mRecyclerView.setLayoutManager(mLayoutManager);
 //        final ArrayList<Task> data = mPresenter.getDataSet();
 //        mAdapter = new RecyclerViewAdapterTodolist(data);
@@ -72,40 +75,33 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
         setTitle("Todo List");
 
 
-        binding.homeAddTaskBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoNewTask();
-            }
-        });
-
-//        addButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                gotoNewTask();
-//            }
-//        });
-
-//        buttonAdd = fragmentView.findViewById(R.id.buttonAdd);
-//        buttonAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                gotoNewTask();
-//            }
-//        });
-
-
-//        ((RecyclerViewAdapterTodolist) mAdapter).setOnItemClickListener(new RecyclerViewAdapterTodolist.MyClickListener() {
-//            @Override
-//            public void onItemClick(int position, View v) {
-//                String id = data.get(position).getId();
-//                Log.d("BELAJAR ACTIVITY",">>>>>"+ position);
-//                editTask(id);
-//            }
-//        });
+        binding.homePrivateBtn.setOnClickListener(this);
+        binding.homePublicBtn.setOnClickListener(this);
+        binding.homeAddTaskBtn.setOnClickListener(this);
 
 
         return fragmentView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.home_addTask_btn) gotoNewTask();
+        if (v.getId() == R.id.home_private_btn) setPrivateBtn();
+        if (v.getId() == R.id.home_public_btn) setPublicBtn();
+
+
+    }
+
+    private void setPublicBtn() {
+        binding.homePrivateBtn.setTextColor(Color.DKGRAY);
+        binding.homePublicBtn.setTextColor(Color.BLACK);
+        mPresenter.getData(1);
+    }
+
+    private void setPrivateBtn() {
+        binding.homePrivateBtn.setTextColor(Color.BLACK);
+        binding.homePublicBtn.setTextColor(Color.DKGRAY);
+        mPresenter.getData(0);
     }
 
     @Override
@@ -121,39 +117,79 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
     }
 
     @Override
-    public void getDataFromDatabase() {
-        //working with database
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.homeTasksRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        lists = new ArrayList<Task>();
+    public void requestPrivateTasks(final RequestCallback<List<Task>> requestCallback ) {
+        AndroidNetworking.get(myURL.PRIVATE_TASK_URL)
+                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObjectList(Task.class, new ParsedRequestListener<List<Task>>() {
+                    @Override
+                    public void onResponse(List<Task> response) {
+                        if(response == null){
+                            requestCallback.requestFailed("Null Response");
+                            Log.d("PRIVATE", "response null");
+                        }else{
+                            requestCallback.requestSuccess(response);
+                        }
+                    }
 
-        //get data from firebase
-        reference = FirebaseDatabase.getInstance().getReference().child("todolist");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //retrieve data
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                    Task toDoList = dataSnapshot1.getValue(Task.class);
-                    lists.add(toDoList);
-                }
-                taskAdapter = new TaskAdapter(getActivity(), lists);
-//                mRecyclerView.setAdapter(taskAdapter);
-                binding.homeTasksRv.setAdapter(taskAdapter);
-                taskAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //show an error
-                Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onError(ANError anError) {
+                        requestCallback.requestFailed(anError.getMessage());
+                        Log.d("PRIVATE", "error gan " + anError.getMessage() + anError.getErrorCode());
+                    }
+                });
     }
 
-    public void editTask(String id) {
+    @Override
+    public void requestPublicTasks(RequestCallback<List<Task>> requestCallback) {
+        AndroidNetworking.get(myURL.PUBLIC_TASK_URL)
+                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObjectList(Task.class, new ParsedRequestListener<List<Task>>() {
+                    @Override
+                    public void onResponse(List<Task> response) {
+                        if(response == null){
+                            requestCallback.requestFailed("Null Response");
+                            Log.d("PUBLIC", "response null");
+                        }else{
+                            requestCallback.requestSuccess(response);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        requestCallback.requestFailed(anError.getMessage());
+                        Log.d("PUBLIC", "error gan " + anError.getMessage() + anError.getErrorCode());
+                    }
+                });
+    }
+
+    @Override
+    public void showFailedMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void setResult(final List<Task> data){
+        mAdapter = new RecyclerViewAdapterTodolist(data);
+        mRecyclerView.setAdapter(mAdapter);
+        ((RecyclerViewAdapterTodolist) mAdapter).setOnItemClickListener(new RecyclerViewAdapterTodolist.MyClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                int task_id = data.get(position).getId();
+                redirectToEdit(task_id);
+            }
+        });
+
+    }
+
+    private void redirectToEdit(int task_id) {
         Intent intent = new Intent(activity, EditTaskActivity.class);
-        intent.putExtra("TaskId", id);
+        intent.putExtra("task_id", task_id);
         startActivity(intent);
     }
 

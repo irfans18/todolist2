@@ -1,19 +1,33 @@
 package com.irfans.todolist2.modul.edittask;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.DatePicker;
+import android.widget.RadioGroup;
 
 import androidx.annotation.Nullable;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.irfans.todolist2.R;
 import com.irfans.todolist2.base.BaseFragment;
+import com.irfans.todolist2.data.model.SuccessMessage;
 import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.databinding.FragmentEditTaskBinding;
 import com.irfans.todolist2.modul.todolist.TodoListActivity;
+import com.irfans.todolist2.utils.RequestCallback;
+import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
+import com.irfans.todolist2.utils.myURL;
+
+import java.util.Calendar;
 
 
 /**
@@ -22,15 +36,16 @@ import com.irfans.todolist2.modul.todolist.TodoListActivity;
 
 public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskContract.Presenter> implements EditTaskContract.View {
 
-    EditText etTaskTitle;
-    EditText etTaskDescription;
-    EditText etTaskDate;
-    Button btnSave;
-    String id;
-    EditText btnDelete;
+    private FragmentEditTaskBinding binding;
+    private TokenSessionRepository tokenSessionRepository;
+    private String task_id;
+    String date;
+    String privacy;
 
 
-    public EditTaskFragment() {
+    public EditTaskFragment(int task_id, TokenSessionRepository tokenSessionRepository) {
+        this.task_id = String.valueOf(task_id);
+        this.tokenSessionRepository = tokenSessionRepository;
     }
 
     @Nullable
@@ -40,35 +55,150 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
         fragmentView = inflater.inflate(R.layout.fragment_edit_task, container, false);
         mPresenter = new EditTaskPresenter(this);
         mPresenter.start();
+        mPresenter.loadData();
+        initCalendar();
 
-        etTaskTitle = fragmentView.findViewById(R.id.taskTitle_et2);
-        etTaskDescription = fragmentView.findViewById(R.id.taskDesc_et2);
-        etTaskDate = fragmentView.findViewById(R.id.taskDate_et2);
-        btnSave = fragmentView.findViewById(R.id.updateTask_btn);
-        btnDelete = fragmentView.findViewById(R.id.deleteTask_btn);
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        setTitle("Edit Task");
+        binding.updateTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setBtSaveClick();
             }
         });
 
-        setTitle("Edit Task");
-        mPresenter.loadData(this.id);
+        binding.editTaskPrivacyRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                checkPrivacy(checkedId);
+            }
+        });
 
         return fragmentView;
     }
 
+    private void checkPrivacy(int checkedId) {
+        switch (checkedId){
+            case R.id.new_task_private_rb :
+                privacy = "0";
+                break;
+            case R.id.new_task_public_rb:
+                privacy = "1";
+                break;
+        }
+    }
+
+    public void initCalendar(){
+        final Calendar calendar = Calendar.getInstance();
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        binding.editTaskTaskDateTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        month = month+1;
+//                        String date = day+"/"+month+"/"+year;
+//                        String dates = date.toString();
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, year-1);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, day);
+                        date = year+"-"+month+"-"+day;
+                        CharSequence date = DateFormat.format("EEE, d MMM yyyy", calendar);
+                        binding.editTaskTaskDateTv.setText(date);
+
+                    }
+                }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
+
+
+    }
+
     public void setBtSaveClick(){
-        String title = etTaskTitle.getText().toString();
-        String description = etTaskDescription.getText().toString();
-        String date = etTaskDate.getText().toString();
-        mPresenter.saveData(title,description, date);
+        String title = binding.editTaskTaskTitleEt2.getText().toString();
+        String description = binding.editTaskTaskDescEt2.getText().toString();
+        mPresenter.saveData(title,description);
     }
 
     @Override
     public void setPresenter(EditTaskContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void requestEditTask(String title, String description, RequestCallback<SuccessMessage> requestCallback) {
+        AndroidNetworking.post(myURL.CREATE_TASK_URL)
+                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
+                .addBodyParameter("title", title)
+                .addBodyParameter("description", description)
+                .addBodyParameter("deadline", date)
+                .addBodyParameter("privacy", privacy)
+                .setTag(this)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsObject(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
+
+                    @Override
+                    public void onResponse(SuccessMessage response) {
+                        if (response == null) {
+                            requestCallback.requestFailed("Null Response");
+                            Log.d("tag", "response null");
+                        } else if (response.isSuccess() == false) {
+                            requestCallback.requestFailed("Cancel Failed");
+                        } else {
+                            requestCallback.requestSuccess(response);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        requestCallback.requestFailed(anError.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void requestTaskDetail(final RequestCallback<EditTaskResponse> requestCallback) {
+        AndroidNetworking.get(myURL.DETAIL_TASK_URL + task_id)
+                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObjectList(EditTaskResponse.class, new ParsedRequestListener<EditTaskResponse>() {
+                    @Override
+                    public void onResponse(EditTaskResponse response) {
+                        if(response == null){
+                            requestCallback.requestFailed("Null Response");
+                            Log.d("PUBLIC", "response null");
+                        }else{
+                            requestCallback.requestSuccess(response);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        requestCallback.requestFailed(anError.getMessage());
+                        Log.d("PUBLIC", "error gan " + anError.getMessage() + anError.getErrorCode());
+                    }
+                });
+    }
+
+    @Override
+    public void setResult(Task data) {
+        binding.editTaskTaskTitleEt2.setText(data.getTitle());
+        binding.editTaskTaskDescEt2.setText(data.getDescription());
+        binding.editTaskTaskDateTv.setText(data.getDeadline());
+
+            if (data.isPrivacy()) {
+                binding.editTaskPublicRb.setChecked(true);
+            }else
+                binding.editTaskPrivateRb.setChecked(true);
     }
 
     @Override
@@ -78,16 +208,5 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
             activity.finish();
     }
 
-    @Override
-    public void showData(Task task) {
-        this.etTaskTitle.setText(task.getTitle());
-        this.etTaskDescription.setText(task.getDescription());
-        this.etTaskDate.setText(task.getDate());
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id=id;
-    }
 
 }
