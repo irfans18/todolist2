@@ -57,12 +57,18 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         holder.tvDescription.setText(mDataset.get(position).getDescription());
         holder.tvDate.setText(mDataset.get(position).getDeadline());
 
-        boolean check = mDataset.get(position).isChecked();
-//        if (check){
-//            holder.cbItem.setChecked(true);
-//        }else {
-//            holder.cbItem.setChecked(false);
-//        }
+        int check = mDataset.get(position).isChecked();
+        if (check == 1){
+            holder.cbItem.setChecked(true);
+        }else {
+            holder.cbItem.setChecked(false);
+        }
+
+        if (holder.cbItem.isChecked()){
+            mDataset.get(position).setChecked(1);
+        }else {
+            mDataset.get(position).setChecked(0);
+        }
 
     }
 
