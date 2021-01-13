@@ -7,17 +7,8 @@ public class Task extends BaseModel {
     private String title;
     private String description;
     private String deadline;
-    private boolean privacy;
+    private int privacy;
     private boolean checked;
-
-    public Task(int id, String title, String description, String deadline, boolean privacy, boolean checked) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.deadline = deadline;
-        this.privacy = privacy;
-        this.checked = checked;
-    }
 
     public boolean isChecked() {
         return checked;
@@ -59,11 +50,11 @@ public class Task extends BaseModel {
         this.deadline = deadline;
     }
 
-    public boolean isPrivacy() {
+    public int isPrivacy() {
         return privacy;
     }
 
-    public void setPrivacy(boolean privacy) {
+    public void setPrivacy(int privacy) {
         this.privacy = privacy;
     }
 }

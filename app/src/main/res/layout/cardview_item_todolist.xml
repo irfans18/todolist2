@@ -17,8 +17,7 @@
         android:layout_marginBottom="5dp"
         card_view:cardCornerRadius="7dp"
         card_view:contentPadding="10dp"
-        app:cardBackgroundColor="?attr/panelColor"
-        android:foreground="?android:attr/selectableItemBackground">
+        app:cardBackgroundColor="?attr/panelColor">
 
         <RelativeLayout
             android:layout_width="fill_parent"

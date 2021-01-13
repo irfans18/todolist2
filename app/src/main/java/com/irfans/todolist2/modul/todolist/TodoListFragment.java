@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -30,7 +31,12 @@ import com.irfans.todolist2.utils.RecyclerViewAdapterTodolist;
 import com.irfans.todolist2.utils.RequestCallback;
 import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
 import com.irfans.todolist2.utils.SharedPreferences.TokenSharedUtil;
+import com.irfans.todolist2.utils.SharedPreferences.UtilProvider;
 import com.irfans.todolist2.utils.myURL;
+
+import okhttp3.OkHttpClient;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -42,14 +48,12 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private final TokenSharedUtil tokenSessionRepository;
 
 
     FragmentHomeBinding binding;
 
 
-    public TodoListFragment(TokenSharedUtil tokenSessionRepository) {
-        this.tokenSessionRepository = tokenSessionRepository;
+    public TodoListFragment() {
     }
 
     @Nullable
@@ -62,21 +66,19 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
         mPresenter.start();
 
 
+        mRecyclerView = fragmentView.findViewById(R.id.home_tasks_rv);
+        mRecyclerView.setHasFixedSize(true);
         binding.homeTasksRv.setHasFixedSize(true);
-//        mRecyclerView = fragmentView.findViewById(R.id.home_tasks_rv);
-//        mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(activity);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         binding.homeTasksRv.setLayoutManager(mLayoutManager);
-        mPresenter.getData(1);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
+        mPresenter.getData();
 //        final ArrayList<Task> data = mPresenter.getDataSet();
 //        mAdapter = new RecyclerViewAdapterTodolist(data);
 //        mRecyclerView.setAdapter(mAdapter);
         setTitle("Todo List");
 
 
-        binding.homePrivateBtn.setOnClickListener(this);
-        binding.homePublicBtn.setOnClickListener(this);
         binding.homeAddTaskBtn.setOnClickListener(this);
 
 
@@ -86,23 +88,11 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.home_addTask_btn) gotoNewTask();
-        if (v.getId() == R.id.home_private_btn) setPrivateBtn();
-        if (v.getId() == R.id.home_public_btn) setPublicBtn();
+//        if (v.getId() == R.id.home_public_btn) setPublicBtn();
 
 
     }
 
-    private void setPublicBtn() {
-        binding.homePrivateBtn.setTextColor(Color.DKGRAY);
-        binding.homePublicBtn.setTextColor(Color.BLACK);
-        mPresenter.getData(1);
-    }
-
-    private void setPrivateBtn() {
-        binding.homePrivateBtn.setTextColor(Color.BLACK);
-        binding.homePublicBtn.setTextColor(Color.DKGRAY);
-        mPresenter.getData(0);
-    }
 
     @Override
     public void setPresenter(TodoListContract.Presenter presenter) {
@@ -118,55 +108,23 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
 
     @Override
     public void requestPrivateTasks(final RequestCallback<List<Task>> requestCallback ) {
-        AndroidNetworking.get(myURL.PRIVATE_TASK_URL)
-                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
+        AndroidNetworking.get(myURL.SHOW_TASK_URL)
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
                 .getAsObjectList(Task.class, new ParsedRequestListener<List<Task>>() {
                     @Override
-                    public void onResponse(List<Task> response) {
-                        if(response == null){
-                            requestCallback.requestFailed("Null Response");
-                            Log.d("PRIVATE", "response null");
-                        }else{
-                            requestCallback.requestSuccess(response);
-                        }
+                    public void onResponse(List<Task> data) {
+                        // do anything with response
+                        requestCallback.requestSuccess(data);
                     }
-
                     @Override
                     public void onError(ANError anError) {
-                        requestCallback.requestFailed(anError.getMessage());
-                        Log.d("PRIVATE", "error gan " + anError.getMessage() + anError.getErrorCode());
+                        // handle error
                     }
                 });
     }
 
-    @Override
-    public void requestPublicTasks(RequestCallback<List<Task>> requestCallback) {
-        AndroidNetworking.get(myURL.PUBLIC_TASK_URL)
-                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
-                .setTag(this)
-                .setPriority(Priority.LOW)
-                .build()
-                .getAsObjectList(Task.class, new ParsedRequestListener<List<Task>>() {
-                    @Override
-                    public void onResponse(List<Task> response) {
-                        if(response == null){
-                            requestCallback.requestFailed("Null Response");
-                            Log.d("PUBLIC", "response null");
-                        }else{
-                            requestCallback.requestSuccess(response);
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        requestCallback.requestFailed(anError.getMessage());
-                        Log.d("PUBLIC", "error gan " + anError.getMessage() + anError.getErrorCode());
-                    }
-                });
-    }
 
     @Override
     public void showFailedMessage(String message) {
@@ -176,20 +134,31 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
     @Override
     public void setResult(final List<Task> data){
         mAdapter = new RecyclerViewAdapterTodolist(data);
-        mRecyclerView.setAdapter(mAdapter);
+        binding.homeTasksRv.setAdapter(mAdapter);
+//        mRecyclerView.setAdapter(mAdapter);
+
+        Log.e(TAG, data.get(0).getTitle());
+
         ((RecyclerViewAdapterTodolist) mAdapter).setOnItemClickListener(new RecyclerViewAdapterTodolist.MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                int task_id = data.get(position).getId();
-                redirectToEdit(task_id);
+                Task task = new Task();
+                task.setId(data.get(position).getId());
+                task.setTitle(data.get(position).getTitle());
+                task.setDeadline(data.get(position).getDeadline());
+                task.setDescription(data.get(position).getDescription());
+                redirectToEdit(task);
             }
         });
 
     }
 
-    private void redirectToEdit(int task_id) {
+    private void redirectToEdit(Task task) {
         Intent intent = new Intent(activity, EditTaskActivity.class);
-        intent.putExtra("task_id", task_id);
+        intent.putExtra("id", task.getId());
+        intent.putExtra("title", task.getTitle());
+        intent.putExtra("desc", task.getDescription());
+        intent.putExtra("date", task.getDeadline());
         startActivity(intent);
     }
 

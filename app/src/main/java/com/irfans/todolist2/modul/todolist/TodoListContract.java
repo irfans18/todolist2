@@ -17,11 +17,10 @@ public interface TodoListContract {
         void gotoNewTask();
         void setResult(List<Task> data);
         void requestPrivateTasks(RequestCallback<List<Task>> requestCallback);
-        void requestPublicTasks(RequestCallback<List<Task>> requestCallback);
         void showFailedMessage(String message);
     }
 
     interface Presenter extends BasePresenter {
-        void getData(int privacy);
+        void getData();
     }
 }

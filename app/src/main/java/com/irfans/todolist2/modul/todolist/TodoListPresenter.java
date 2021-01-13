@@ -1,10 +1,14 @@
 package com.irfans.todolist2.modul.todolist;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.irfans.todolist2.data.model.Task;
 import com.irfans.todolist2.utils.RequestCallback;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by fahrul on 13/03/19.
@@ -23,11 +27,11 @@ public class TodoListPresenter implements TodoListContract.Presenter{
     public void start() {}
 
     @Override
-    public void getData(int privacy) {
-        if (privacy == 0){
+    public void getData() {
             view.requestPrivateTasks(new RequestCallback<List<Task>>() {
                 @Override
                 public void requestSuccess(List<Task> data) {
+                    Log.e(TAG, data.get(0).getTitle());
                     view.setResult(data);
                 }
 
@@ -36,18 +40,5 @@ public class TodoListPresenter implements TodoListContract.Presenter{
                     view.showFailedMessage(errorMessage);
                 }
             });
-        }else {
-            view.requestPublicTasks(new RequestCallback<List<Task>>() {
-                @Override
-                public void requestSuccess(List<Task> data) {
-                    view.setResult(data);
-                }
-
-                @Override
-                public void requestFailed(String errorMessage) {
-                    view.showFailedMessage(errorMessage);
-                }
-            });
-        }
     }
 }

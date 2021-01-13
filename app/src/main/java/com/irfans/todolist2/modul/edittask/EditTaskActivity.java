@@ -3,12 +3,12 @@ package com.irfans.todolist2.modul.edittask;
 import android.view.View;
 
 import com.irfans.todolist2.base.BaseFragmentHolderActivity;
+import com.irfans.todolist2.data.model.Task;
 import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
 
 
 public class EditTaskActivity extends BaseFragmentHolderActivity {
     EditTaskFragment editTaskFragment;
-    TokenSessionRepository tokenSessionRepository;
     private final int UPDATE_REQUEST = 2019;
 
     @Override
@@ -20,9 +20,12 @@ public class EditTaskActivity extends BaseFragmentHolderActivity {
 //        ivIcon.setImageResource(R.drawable.....);
         ivIcon.setVisibility(View.VISIBLE);
 
-        int id = getIntent().getIntExtra("task_id", 0);
-        editTaskFragment = new EditTaskFragment(id, tokenSessionRepository);
-//        editTaskFragment.setId(id);
+        Task task = new Task();
+        task.setId(getIntent().getIntExtra("id", 0));
+        task.setTitle(getIntent().getStringExtra("title"));
+        task.setDescription(getIntent().getStringExtra("desc"));
+        task.setDeadline(getIntent().getStringExtra("date"));
+        editTaskFragment = new EditTaskFragment(task);
         setCurrentFragment(editTaskFragment, false);
 
     }

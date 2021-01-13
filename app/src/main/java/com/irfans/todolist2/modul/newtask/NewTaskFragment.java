@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -29,6 +30,8 @@ import com.irfans.todolist2.utils.SharedPreferences.TokenSharedUtil;
 import com.irfans.todolist2.utils.myURL;
 
 import java.util.Calendar;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -65,25 +68,8 @@ public class NewTaskFragment extends BaseFragment<NewTaskActivity, NewTaskContra
         });
 
         setTitle("New Task");
-        binding.newTaskPrivacyRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                checkPrivacy(checkedId);
-            }
-        });
 
         return fragmentView;
-    }
-
-    private void checkPrivacy(int checkedId) {
-        switch (checkedId){
-            case R.id.new_task_private_rb :
-                privacy = "0";
-                break;
-            case R.id.new_task_public_rb:
-                privacy = "1";
-                break;
-        }
     }
 
     public void initCalendar(){
@@ -127,12 +113,11 @@ public class NewTaskFragment extends BaseFragment<NewTaskActivity, NewTaskContra
 
     @Override
     public void requestNewTask(String title, String description, RequestCallback<SuccessMessage> requestCallback) {
+        Log.e(TAG, date );
         AndroidNetworking.post(myURL.CREATE_TASK_URL)
-                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
                 .addBodyParameter("title", title)
                 .addBodyParameter("description", description)
                 .addBodyParameter("deadline", date)
-                .addBodyParameter("privacy", privacy)
                 .setTag(this)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -160,6 +145,11 @@ public class NewTaskFragment extends BaseFragment<NewTaskActivity, NewTaskContra
     @Override
     public void setPresenter(NewTaskContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void showSuccessMessage(SuccessMessage data) {
+        Toast.makeText(activity, data.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

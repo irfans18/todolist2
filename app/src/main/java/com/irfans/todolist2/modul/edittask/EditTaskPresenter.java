@@ -20,10 +20,11 @@ public class EditTaskPresenter implements EditTaskContract.Presenter{
     }
 
     @Override
-    public void saveData(String title, String description) {
-        view.requestEditTask(title, description, new RequestCallback<SuccessMessage>() {
+    public void saveData(Task task) {
+        view.requestEditTask(task, new RequestCallback<SuccessMessage>() {
             @Override
             public void requestSuccess(SuccessMessage data) {
+                view.showSuccessMessage(data);
                 view.redirectToTaskList();
             }
 
@@ -35,17 +36,7 @@ public class EditTaskPresenter implements EditTaskContract.Presenter{
     }
 
     @Override
-    public void loadData() {
-        view.requestTaskDetail(new RequestCallback<EditTaskResponse>() {
-            @Override
-            public void requestSuccess(EditTaskResponse data) {
-                view.setResult(data.getTask());
-            }
-
-            @Override
-            public void requestFailed(String errorMessage) {
-
-            }
-        });
+    public void loadData(Task task) {
+        view.setResult(task);
     }
 }

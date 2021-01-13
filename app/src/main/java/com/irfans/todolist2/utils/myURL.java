@@ -9,6 +9,7 @@ public class myURL {
 
     public final static String CREATE_TASK_URL = BASE_URL + "task/create";
     public final static String PRIVATE_TASK_URL = BASE_URL + "task/private";
+    public final static String SHOW_TASK_URL = BASE_URL + "task/all";
     public final static String PUBLIC_TASK_URL = BASE_URL + "task/public";
     public final static String DELETE_TASK_URL = BASE_URL + "task/delete/";
     public final static String UPDATE_TASK_URL = BASE_URL + "task/update/";

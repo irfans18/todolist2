@@ -3,6 +3,8 @@ package com.irfans.todolist2.utils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,12 +20,16 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
     private static MyClickListener myClickListener;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView tvDate;
         TextView tvTitle;
         TextView tvDescription;
+        CheckBox cbItem;
         public MyViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (TextView) itemView.findViewById(R.id.tvTodolistTitle);
-            tvDescription = (TextView) itemView.findViewById(R.id.tvTodolistDescription);
+            tvTitle = (TextView) itemView.findViewById(R.id.taskTitle_tv);
+            tvDescription = (TextView) itemView.findViewById(R.id.taskDesc_tv);
+            tvDate = itemView.findViewById(R.id.taskDate_tv);
+            cbItem = itemView.findViewById(R.id.item_check);
             itemView.setOnClickListener(this);
         }
 
@@ -39,8 +45,8 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public com.irfans.todolist2.utils.RecyclerViewAdapterTodolist.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_item_todolist, parent, false);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -49,6 +55,15 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tvTitle.setText(mDataset.get(position).getTitle());
         holder.tvDescription.setText(mDataset.get(position).getDescription());
+        holder.tvDate.setText(mDataset.get(position).getDeadline());
+
+        boolean check = mDataset.get(position).isChecked();
+//        if (check){
+//            holder.cbItem.setChecked(true);
+//        }else {
+//            holder.cbItem.setChecked(false);
+//        }
+
     }
 
     @Override

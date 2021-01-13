@@ -23,6 +23,7 @@ public class NewTaskPresenter implements NewTaskContract.Presenter{
         view.requestNewTask(title, description, new RequestCallback<SuccessMessage>() {
             @Override
             public void requestSuccess(SuccessMessage data) {
+                view.showSuccessMessage(data);
                 view.redirectToTaskList();
             }
 

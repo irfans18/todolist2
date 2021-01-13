@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -29,6 +31,8 @@ import com.irfans.todolist2.utils.myURL;
 
 import java.util.Calendar;
 
+import static android.content.ContentValues.TAG;
+
 
 /**
  * Created by fahrul on 13/03/19.
@@ -37,27 +41,24 @@ import java.util.Calendar;
 public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskContract.Presenter> implements EditTaskContract.View {
 
     private FragmentEditTaskBinding binding;
-    private TokenSessionRepository tokenSessionRepository;
-    private String task_id;
-    String date;
-    String privacy;
+    private Task task;
+    String date = null;
 
 
-    public EditTaskFragment(int task_id, TokenSessionRepository tokenSessionRepository) {
-        this.task_id = String.valueOf(task_id);
-        this.tokenSessionRepository = tokenSessionRepository;
+    public EditTaskFragment(Task task) {
+        this.task = task;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        fragmentView = inflater.inflate(R.layout.fragment_edit_task, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_task, container, false);
+        fragmentView = binding.getRoot();
+//        fragmentView = inflater.inflate(R.layout.fragment_edit_task, container, false);
         mPresenter = new EditTaskPresenter(this);
-        mPresenter.start();
-        mPresenter.loadData();
+        mPresenter.loadData(task);
         initCalendar();
-
         setTitle("Edit Task");
         binding.updateTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,27 +66,19 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                 setBtSaveClick();
             }
         });
-
-        binding.editTaskPrivacyRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.deleteTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                checkPrivacy(checkedId);
+            public void onClick(View v) {
+                deleteTask();
             }
         });
 
         return fragmentView;
     }
 
-    private void checkPrivacy(int checkedId) {
-        switch (checkedId){
-            case R.id.new_task_private_rb :
-                privacy = "0";
-                break;
-            case R.id.new_task_public_rb:
-                privacy = "1";
-                break;
-        }
+    private void deleteTask() {
     }
+
 
     public void initCalendar(){
         final Calendar calendar = Calendar.getInstance();
@@ -121,9 +114,12 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
     }
 
     public void setBtSaveClick(){
-        String title = binding.editTaskTaskTitleEt2.getText().toString();
-        String description = binding.editTaskTaskDescEt2.getText().toString();
-        mPresenter.saveData(title,description);
+        Task newTask = new Task();
+        newTask.setTitle(binding.editTaskTaskTitleEt2.getText().toString());
+        newTask.setDescription(binding.editTaskTaskDescEt2.getText().toString());
+        if (date != null) newTask.setDeadline(date);
+        newTask.setDeadline(binding.editTaskTaskDateTv.getText().toString());
+        mPresenter.saveData(newTask);
     }
 
     @Override
@@ -132,13 +128,11 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
     }
 
     @Override
-    public void requestEditTask(String title, String description, RequestCallback<SuccessMessage> requestCallback) {
-        AndroidNetworking.post(myURL.CREATE_TASK_URL)
-                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
-                .addBodyParameter("title", title)
-                .addBodyParameter("description", description)
-                .addBodyParameter("deadline", date)
-                .addBodyParameter("privacy", privacy)
+    public void requestEditTask(Task ntask, RequestCallback<SuccessMessage> requestCallback) {
+        AndroidNetworking.post(myURL.UPDATE_TASK_URL + task.getId())
+                .addBodyParameter("title", ntask.getTitle())
+                .addBodyParameter("description", ntask.getDescription())
+                .addBodyParameter("deadline", ntask.getDeadline())
                 .setTag(this)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -163,31 +157,6 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                 });
     }
 
-    @Override
-    public void requestTaskDetail(final RequestCallback<EditTaskResponse> requestCallback) {
-        AndroidNetworking.get(myURL.DETAIL_TASK_URL + task_id)
-                .addHeaders("Authorization", "Bearer " + tokenSessionRepository.getToken())
-                .setTag(this)
-                .setPriority(Priority.LOW)
-                .build()
-                .getAsObjectList(EditTaskResponse.class, new ParsedRequestListener<EditTaskResponse>() {
-                    @Override
-                    public void onResponse(EditTaskResponse response) {
-                        if(response == null){
-                            requestCallback.requestFailed("Null Response");
-                            Log.d("PUBLIC", "response null");
-                        }else{
-                            requestCallback.requestSuccess(response);
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        requestCallback.requestFailed(anError.getMessage());
-                        Log.d("PUBLIC", "error gan " + anError.getMessage() + anError.getErrorCode());
-                    }
-                });
-    }
 
     @Override
     public void setResult(Task data) {
@@ -195,10 +164,15 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
         binding.editTaskTaskDescEt2.setText(data.getDescription());
         binding.editTaskTaskDateTv.setText(data.getDeadline());
 
-            if (data.isPrivacy()) {
-                binding.editTaskPublicRb.setChecked(true);
-            }else
-                binding.editTaskPrivateRb.setChecked(true);
+//            if (data.isPrivacy()) {
+//                binding.editTaskPublicRb.setChecked(true);
+//            }else
+//                binding.editTaskPrivateRb.setChecked(true);
+    }
+
+    @Override
+    public void showSuccessMessage(SuccessMessage data) {
+        Toast.makeText(activity, data.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

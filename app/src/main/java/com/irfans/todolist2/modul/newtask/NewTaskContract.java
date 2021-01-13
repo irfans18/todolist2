@@ -13,6 +13,7 @@ import com.irfans.todolist2.utils.RequestCallback;
 public interface NewTaskContract {
     interface View extends BaseView<Presenter> {
         void redirectToTaskList();
+        void showSuccessMessage(SuccessMessage data);
         void requestNewTask(String title, String description, RequestCallback<SuccessMessage> requestCallback);
     }
 

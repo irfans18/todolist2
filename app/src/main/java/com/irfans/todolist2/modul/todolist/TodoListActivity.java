@@ -23,7 +23,7 @@ public class TodoListActivity extends BaseFragmentHolderActivity {
         ivIcon.setVisibility(View.VISIBLE);
 
         tokenSessionRepository = UtilProvider.getTokenSharedUtil();
-        todoListFragment = new TodoListFragment(tokenSessionRepository);
+        todoListFragment = new TodoListFragment();
         setCurrentFragment(todoListFragment, false);
 
     }

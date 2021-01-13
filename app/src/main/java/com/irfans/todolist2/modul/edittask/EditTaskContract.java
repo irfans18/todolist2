@@ -14,12 +14,12 @@ public interface EditTaskContract {
     interface View extends BaseView<Presenter> {
         void redirectToTaskList();
         void setResult(Task data);
-        void requestEditTask(String title, String description, RequestCallback<SuccessMessage> requestCallback);
-        void requestTaskDetail(RequestCallback<EditTaskResponse> requestCallback);
+        void showSuccessMessage(SuccessMessage data);
+        void requestEditTask(Task task, RequestCallback<SuccessMessage> requestCallback);
     }
 
     interface Presenter extends BasePresenter {
-        void saveData(String title, String description);
-        void loadData();
+        void saveData(Task task);
+        void loadData(Task task);
     }
 }

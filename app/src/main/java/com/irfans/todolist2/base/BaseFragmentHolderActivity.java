@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.irfans.todolist2.R;
-import com.irfans.todolist2.modul.login.LoginActivity;
 import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
 import com.irfans.todolist2.utils.SharedPreferencesUtil;
 

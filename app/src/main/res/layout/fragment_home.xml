@@ -76,42 +76,14 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="-70dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/home_private_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Private"
-            android:textColor="@color/v2dark60" />
-
-        <Button
-            android:id="@+id/home_public_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Public"
-            android:textColor="#707070" />
-
-
-
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_tasks_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="-60dp"
         android:layout_marginRight="15dp">
 
     </androidx.recyclerview.widget.RecyclerView>
