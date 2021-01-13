@@ -3,13 +3,11 @@ package com.irfans.todolist2.utils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.irfans.todolist2.R;
@@ -23,13 +21,15 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         TextView tvDate;
         TextView tvTitle;
         TextView tvDescription;
-        CheckBox cbItem;
+        ImageView ivItemDone;
+        ImageView ivItemBox;
         public MyViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.taskTitle_tv);
             tvDescription = (TextView) itemView.findViewById(R.id.taskDesc_tv);
             tvDate = itemView.findViewById(R.id.taskDate_tv);
-            cbItem = itemView.findViewById(R.id.item_check);
+            ivItemDone = itemView.findViewById(R.id.item_check_done);
+            ivItemBox = itemView.findViewById(R.id.item_check_box);
             itemView.setOnClickListener(this);
         }
 
@@ -59,17 +59,10 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
 
         int check = mDataset.get(position).isChecked();
         if (check == 1){
-            holder.cbItem.setChecked(true);
+            holder.ivItemDone.setVisibility(View.VISIBLE);
         }else {
-            holder.cbItem.setChecked(false);
+            holder.ivItemBox.setVisibility(View.VISIBLE);
         }
-
-        if (holder.cbItem.isChecked()){
-            mDataset.get(position).setChecked(1);
-        }else {
-            mDataset.get(position).setChecked(0);
-        }
-
     }
 
     @Override

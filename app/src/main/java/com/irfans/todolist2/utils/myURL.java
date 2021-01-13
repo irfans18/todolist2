@@ -13,7 +13,7 @@ public class myURL {
     public final static String PUBLIC_TASK_URL = BASE_URL + "task/public";
     public final static String DELETE_TASK_URL = BASE_URL + "task/delete/";
     public final static String UPDATE_TASK_URL = BASE_URL + "task/update/";
-    public final static String DETAIL_TASK_URL = BASE_URL + "task/detail/";
+    public final static String FINISH_TASK_URL = BASE_URL + "task/finish/";
 
     public static String getImageUrl(){
         return IMAGE_URL;

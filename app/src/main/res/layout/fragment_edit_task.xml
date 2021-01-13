@@ -146,18 +146,37 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/updateTask_btn"
-                    android:layout_width="match_parent"
+                    android:layout_width="230dp"
                     android:layout_height="55dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="5dp"
                     android:background="@drawable/bgcreatebtn"
                     android:text="Update Detail"
                     android:textAllCaps="false"
                     android:textColor="@color/v2dark5"
                     android:textSize="22sp" />
+
+                <Button
+                    android:id="@+id/finishTask_btn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/bgcreatebtn"
+                    android:text="Finish"
+                    android:textAllCaps="true"
+                    android:textColor="@color/v2dark5"
+                    android:textSize="22sp" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/deleteTask_btn"

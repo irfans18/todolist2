@@ -30,6 +30,7 @@ import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
 import com.irfans.todolist2.utils.myURL;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -38,7 +39,7 @@ import static android.content.ContentValues.TAG;
  * Created by fahrul on 13/03/19.
  */
 
-public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskContract.Presenter> implements EditTaskContract.View {
+public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskContract.Presenter> implements EditTaskContract.View, View.OnClickListener {
 
     private FragmentEditTaskBinding binding;
     private Task task;
@@ -60,23 +61,35 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
         mPresenter.loadData(task);
         initCalendar();
         setTitle("Edit Task");
-        binding.updateTaskBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setBtSaveClick();
-            }
-        });
-        binding.deleteTaskBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteTask();
-            }
-        });
+        binding.updateTaskBtn.setOnClickListener(this);
+        binding.deleteTaskBtn.setOnClickListener(this);
+        binding.finishTaskBtn.setOnClickListener(this);
 
         return fragmentView;
     }
 
-    private void deleteTask() {
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.updateTask_btn) setBtSaveClick();
+        if (v.getId() == R.id.finishTask_btn) setBtFinishClick();
+        if (v.getId() == R.id.deleteTask_btn) setBtDeleteClick();
+    }
+
+    private void setBtSaveClick(){
+        Task newTask = new Task();
+        newTask.setTitle(binding.editTaskTaskTitleEt2.getText().toString());
+        newTask.setDescription(binding.editTaskTaskDescEt2.getText().toString());
+        if (date != null) newTask.setDeadline(date);
+        newTask.setDeadline(binding.editTaskTaskDateTv.getText().toString());
+        mPresenter.saveData(newTask);
+    }
+
+    private void setBtDeleteClick() {
+        mPresenter.delete(task);
+    }
+
+    private void setBtFinishClick() {
+        mPresenter.finish(task);
     }
 
 
@@ -113,14 +126,7 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
 
     }
 
-    public void setBtSaveClick(){
-        Task newTask = new Task();
-        newTask.setTitle(binding.editTaskTaskTitleEt2.getText().toString());
-        newTask.setDescription(binding.editTaskTaskDescEt2.getText().toString());
-        if (date != null) newTask.setDeadline(date);
-        newTask.setDeadline(binding.editTaskTaskDateTv.getText().toString());
-        mPresenter.saveData(newTask);
-    }
+
 
     @Override
     public void setPresenter(EditTaskContract.Presenter presenter) {
@@ -157,6 +163,43 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                 });
     }
 
+    @Override
+    public void finishTask(int id, RequestCallback<SuccessMessage> requestCallback) {
+        AndroidNetworking.post(myURL.FINISH_TASK_URL + id)
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObjectList(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
+                    @Override
+                    public void onResponse(SuccessMessage data) {
+                        // do anything with response
+                        requestCallback.requestSuccess(data);
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        // handle error
+                    }
+                });
+    }
+
+    @Override
+    public void deleteTask(int id, RequestCallback<SuccessMessage> requestCallback) {
+        AndroidNetworking.post(myURL.DELETE_TASK_URL + id)
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObjectList(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
+                    @Override
+                    public void onResponse(SuccessMessage data) {
+                        // do anything with response
+                        requestCallback.requestSuccess(data);
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        // handle error
+                    }
+                });
+    }
 
     @Override
     public void setResult(Task data) {
@@ -181,6 +224,7 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
             startActivity(intent);
             activity.finish();
     }
+
 
 
 }
