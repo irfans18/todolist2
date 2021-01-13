@@ -8,13 +8,13 @@ public class Task extends BaseModel {
     private String description;
     private String deadline;
     private int privacy;
-    private boolean checked;
+    private int checked;
 
-    public boolean isChecked() {
+    public int isChecked() {
         return checked;
     }
 
-    public void setChecked(boolean checked) {
+    public void setChecked(int checked) {
         this.checked = checked;
     }
 
