@@ -56,11 +56,11 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
         super.onCreateView(inflater, container, savedInstanceState);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_task, container, false);
         fragmentView = binding.getRoot();
-//        fragmentView = inflater.inflate(R.layout.fragment_edit_task, container, false);
-        mPresenter = new EditTaskPresenter(this);
+        mPresenter = new EditTaskPresenter(this, activity);
         mPresenter.loadData(task);
         initCalendar();
         setTitle("Edit Task");
+        binding.itemShareIv.setOnClickListener(this);
         binding.updateTaskBtn.setOnClickListener(this);
         binding.deleteTaskBtn.setOnClickListener(this);
         binding.finishTaskBtn.setOnClickListener(this);
@@ -73,6 +73,16 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
         if (v.getId() == R.id.updateTask_btn) setBtSaveClick();
         if (v.getId() == R.id.finishTask_btn) setBtFinishClick();
         if (v.getId() == R.id.deleteTask_btn) setBtDeleteClick();
+        if (v.getId() == R.id.item_share_iv) shareTask();
+    }
+
+    private void shareTask(){
+        String message = task.getTitle() + "\n" + task.getDescription() + "\n" + task.getDeadline();
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(intent,"Share"));
     }
 
     private void setBtSaveClick(){
@@ -167,7 +177,7 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
     public void finishTask(int id, RequestCallback<SuccessMessage> requestCallback) {
         AndroidNetworking.post(myURL.FINISH_TASK_URL + id)
                 .setTag(this)
-                .setPriority(Priority.LOW)
+                .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsObjectList(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
                     @Override
@@ -186,7 +196,7 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
     public void deleteTask(int id, RequestCallback<SuccessMessage> requestCallback) {
         AndroidNetworking.post(myURL.DELETE_TASK_URL + id)
                 .setTag(this)
-                .setPriority(Priority.LOW)
+                .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsObjectList(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
                     @Override
@@ -206,11 +216,6 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
         binding.editTaskTaskTitleEt2.setText(data.getTitle());
         binding.editTaskTaskDescEt2.setText(data.getDescription());
         binding.editTaskTaskDateTv.setText(data.getDeadline());
-
-//            if (data.isPrivacy()) {
-//                binding.editTaskPublicRb.setChecked(true);
-//            }else
-//                binding.editTaskPrivateRb.setChecked(true);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.irfans.todolist2.modul.edittask;
 
+import android.widget.Toast;
+
 import com.irfans.todolist2.data.model.SuccessMessage;
 import com.irfans.todolist2.data.model.Task;
 import com.irfans.todolist2.utils.RequestCallback;
@@ -10,9 +12,11 @@ import com.irfans.todolist2.utils.RequestCallback;
 
 public class EditTaskPresenter implements EditTaskContract.Presenter{
     private final EditTaskContract.View view;
+    private EditTaskActivity activity;
 
-    public EditTaskPresenter(EditTaskContract.View view) {
+    public EditTaskPresenter(EditTaskContract.View view, EditTaskActivity activity) {
         this.view = view;
+        this.activity = activity;
     }
 
     @Override
@@ -45,6 +49,7 @@ public class EditTaskPresenter implements EditTaskContract.Presenter{
         view.finishTask(task.getId(), new RequestCallback<SuccessMessage>() {
             @Override
             public void requestSuccess(SuccessMessage data) {
+                Toast.makeText(activity, data.getMessage(), Toast.LENGTH_SHORT).show();
                 view.showSuccessMessage(data);
                 view.redirectToTaskList();
             }
@@ -61,6 +66,7 @@ public class EditTaskPresenter implements EditTaskContract.Presenter{
         view.deleteTask(task.getId(), new RequestCallback<SuccessMessage>() {
             @Override
             public void requestSuccess(SuccessMessage data) {
+                Toast.makeText(activity, data.getMessage(), Toast.LENGTH_SHORT).show();
                 view.showSuccessMessage(data);
                 view.redirectToTaskList();
             }

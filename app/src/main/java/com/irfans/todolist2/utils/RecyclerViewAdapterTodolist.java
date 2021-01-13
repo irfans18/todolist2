@@ -1,5 +1,6 @@
 package com.irfans.todolist2.utils;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         TextView tvDescription;
         ImageView ivItemDone;
         ImageView ivItemBox;
+
+
         public MyViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.taskTitle_tv);
@@ -30,6 +33,7 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
             tvDate = itemView.findViewById(R.id.taskDate_tv);
             ivItemDone = itemView.findViewById(R.id.item_check_done);
             ivItemBox = itemView.findViewById(R.id.item_check_box);
+
             itemView.setOnClickListener(this);
         }
 
@@ -63,6 +67,7 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         }else {
             holder.ivItemBox.setVisibility(View.VISIBLE);
         }
+
     }
 
     @Override
