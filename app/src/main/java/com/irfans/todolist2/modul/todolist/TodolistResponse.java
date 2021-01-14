@@ -1,6 +1,6 @@
 package com.irfans.todolist2.modul.todolist;
 
-import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.model.Task;
 
 import java.util.List;
 

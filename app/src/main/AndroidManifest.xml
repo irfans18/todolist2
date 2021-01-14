@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/ThemeWA">
 
-        <activity android:name=".FirstActivity" />
-        <activity android:name=".SecondActivity" />
-<!--        <activity android:name=".modul.todolist.TodoListActivity"/>-->
         <activity android:name=".modul.newtask.NewTaskActivity" />
         <activity android:name=".modul.edittask.EditTaskActivity" />
         <activity android:name=".modul.todolist.TodoListActivity">

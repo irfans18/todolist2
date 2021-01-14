@@ -1,22 +1,17 @@
 package com.irfans.todolist2.utils;
 
-import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.textclassifier.ConversationActions;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
@@ -29,14 +24,13 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.irfans.todolist2.R;
-import com.irfans.todolist2.data.model.SuccessMessage;
-import com.irfans.todolist2.data.model.Task;
-import com.irfans.todolist2.modul.todolist.TodoListActivity;
-import com.irfans.todolist2.modul.todolist.TodoListFragment;
+import com.irfans.todolist2.model.SuccessMessage;
+import com.irfans.todolist2.model.Task;
 
 public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerViewAdapterTodolist.MyViewHolder> {
     private static List<Task> mDataset;
     private static MyClickListener myClickListener;
+    private Context context;
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -44,6 +38,7 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         TextView tvTitle;
         TextView tvDescription;
         CheckBox cbItemBox;
+        ImageView ivShare;
 
 
         public MyViewHolder(View itemView) {
@@ -52,6 +47,7 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
             tvDescription = itemView.findViewById(R.id.taskDesc_tv);
             tvDate = itemView.findViewById(R.id.taskDate_tv);
             cbItemBox = itemView.findViewById(R.id.item_check_box_cb);
+            ivShare = itemView.findViewById(R.id.item_share_iv);
 
             itemView.setOnClickListener(this);
         }
@@ -63,8 +59,9 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public RecyclerViewAdapterTodolist(List<Task> myDataset) {
+    public RecyclerViewAdapterTodolist(List<Task> myDataset, Context context) {
         mDataset = myDataset;
+        this.context = context;
     }
 
     @Override
@@ -76,15 +73,10 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        CharSequence date = null;
-        String sDate = mDataset.get(position).getDeadline();
+        CharSequence date = mDataset.get(position).getDeadline();
         int id = mDataset.get(position).getId();
         int check = mDataset.get(position).isChecked();
-//        if (check == 1){
-//            holder.ivItemDone.setVisibility(View.VISIBLE);
-//        }else {
-//            holder.ivItemBox.setVisibility(View.VISIBLE);
-//        }
+//
         if (check == 1) {
             holder.cbItemBox.setChecked(true);
         } else {
@@ -92,15 +84,14 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         }
 
         try {
-            Date Ddate = new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
+            Date Ddate = new SimpleDateFormat("yyyy-MM-dd").parse(date.toString());
             date = DateFormat.format("EEEE, dd MMMM yyyy", Ddate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         holder.tvTitle.setText(mDataset.get(position).getTitle());
         holder.tvDescription.setText(mDataset.get(position).getDescription());
-        if (date != null) holder.tvDate.setText(date);
-        else holder.tvDate.setText(sDate);
+        holder.tvDate.setText(date);
 
         holder.cbItemBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -118,6 +109,25 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
             }
         });
 
+
+        String finalDate = date.toString();
+        holder.ivShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = "Title : " + mDataset.get(position).getTitle() + "\n"
+                        + "Description : " + mDataset.get(position).getDescription() + "\n"
+                        + "Deadline " + "\n" + finalDate;
+                shareTask(message);
+            }
+        });
+
+    }
+
+    private void shareTask(String message) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        context.startActivity(Intent.createChooser(intent, "Share"));
     }
 
     private void updateStatus(int id, RequestCallback<SuccessMessage> requestCallback) {

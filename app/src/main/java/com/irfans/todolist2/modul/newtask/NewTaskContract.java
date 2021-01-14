@@ -2,8 +2,7 @@ package com.irfans.todolist2.modul.newtask;
 
 import com.irfans.todolist2.base.BasePresenter;
 import com.irfans.todolist2.base.BaseView;
-import com.irfans.todolist2.data.model.SuccessMessage;
-import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.model.SuccessMessage;
 import com.irfans.todolist2.utils.RequestCallback;
 
 /**

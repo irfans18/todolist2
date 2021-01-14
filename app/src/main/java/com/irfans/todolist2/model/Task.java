@@ -1,4 +1,4 @@
-package com.irfans.todolist2.data.model;
+package com.irfans.todolist2.model;
 
 import com.irfans.todolist2.base.BaseModel;
 

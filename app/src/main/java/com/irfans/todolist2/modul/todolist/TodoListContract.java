@@ -1,11 +1,10 @@
 package com.irfans.todolist2.modul.todolist;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.irfans.todolist2.base.BasePresenter;
 import com.irfans.todolist2.base.BaseView;
-import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.model.Task;
 import com.irfans.todolist2.utils.RequestCallback;
 
 /**

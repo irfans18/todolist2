@@ -1,6 +1,6 @@
 package com.irfans.todolist2.modul.edittask;
 
-import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.model.Task;
 
 public class EditTaskResponse {
     public Task task;

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,16 +20,14 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.irfans.todolist2.R;
 import com.irfans.todolist2.base.BaseFragment;
-import com.irfans.todolist2.data.model.SuccessMessage;
-import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.model.SuccessMessage;
+import com.irfans.todolist2.model.Task;
 import com.irfans.todolist2.databinding.FragmentEditTaskBinding;
 import com.irfans.todolist2.modul.todolist.TodoListActivity;
 import com.irfans.todolist2.utils.RequestCallback;
-import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
 import com.irfans.todolist2.utils.myURL;
 
 import java.util.Calendar;
-import java.util.List;
 
 import static android.content.ContentValues.TAG;
 

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,12 +20,10 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.irfans.todolist2.R;
 import com.irfans.todolist2.base.BaseFragment;
-import com.irfans.todolist2.data.model.SuccessMessage;
+import com.irfans.todolist2.model.SuccessMessage;
 import com.irfans.todolist2.databinding.FragmentNewTaskBinding;
 import com.irfans.todolist2.modul.todolist.TodoListActivity;
 import com.irfans.todolist2.utils.RequestCallback;
-import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
-import com.irfans.todolist2.utils.SharedPreferences.TokenSharedUtil;
 import com.irfans.todolist2.utils.myURL;
 
 import java.util.Calendar;
@@ -41,12 +38,9 @@ import static android.content.ContentValues.TAG;
 public class NewTaskFragment extends BaseFragment<NewTaskActivity, NewTaskContract.Presenter> implements NewTaskContract.View {
 
     private FragmentNewTaskBinding binding;
-    private final TokenSharedUtil tokenSessionRepository;
     String date;
-    String privacy;
 
-    public NewTaskFragment(TokenSharedUtil tokenSessionRepository) {
-        this.tokenSessionRepository = tokenSessionRepository;
+    public NewTaskFragment() {
     }
 
     @Nullable
@@ -55,7 +49,7 @@ public class NewTaskFragment extends BaseFragment<NewTaskActivity, NewTaskContra
         super.onCreateView(inflater, container, savedInstanceState);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_task, container, false);
         fragmentView = binding.getRoot();
-        mPresenter = new NewTaskPresenter(this);
+        mPresenter = new NewTaskPresenter(this, activity);
         mPresenter.start();
 
 

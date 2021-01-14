@@ -3,8 +3,7 @@ package com.irfans.todolist2.modul.edittask;
 import android.view.View;
 
 import com.irfans.todolist2.base.BaseFragmentHolderActivity;
-import com.irfans.todolist2.data.model.Task;
-import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
+import com.irfans.todolist2.model.Task;
 
 
 public class EditTaskActivity extends BaseFragmentHolderActivity {

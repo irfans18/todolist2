@@ -2,10 +2,9 @@ package com.irfans.todolist2.modul.todolist;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.model.Task;
 import com.irfans.todolist2.utils.RequestCallback;
 
 import static android.content.ContentValues.TAG;

@@ -1,7 +1,6 @@
 package com.irfans.todolist2.modul.todolist;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -23,18 +21,13 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.irfans.todolist2.R;
 import com.irfans.todolist2.base.BaseFragment;
-import com.irfans.todolist2.data.model.Task;
+import com.irfans.todolist2.model.Task;
 import com.irfans.todolist2.databinding.FragmentHomeBinding;
 import com.irfans.todolist2.modul.edittask.EditTaskActivity;
 import com.irfans.todolist2.modul.newtask.NewTaskActivity;
 import com.irfans.todolist2.utils.RecyclerViewAdapterTodolist;
 import com.irfans.todolist2.utils.RequestCallback;
-import com.irfans.todolist2.utils.SharedPreferences.TokenSessionRepository;
-import com.irfans.todolist2.utils.SharedPreferences.TokenSharedUtil;
-import com.irfans.todolist2.utils.SharedPreferences.UtilProvider;
 import com.irfans.todolist2.utils.myURL;
-
-import okhttp3.OkHttpClient;
 
 import static android.content.ContentValues.TAG;
 
@@ -127,7 +120,7 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
 
     @Override
     public void setResult(final List<Task> data){
-        mAdapter = new RecyclerViewAdapterTodolist(data);
+        mAdapter = new RecyclerViewAdapterTodolist(data, getContext());
         binding.homeTasksRv.setAdapter(mAdapter);
 //        mRecyclerView.setAdapter(mAdapter);
 

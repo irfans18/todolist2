@@ -1,6 +1,8 @@
-package com.irfans.todolist2.data.model;
+package com.irfans.todolist2.model;
 
-public class SuccessMessage {
+import com.irfans.todolist2.base.BaseModel;
+
+public class SuccessMessage extends BaseModel {
     private  boolean success;
     private String message;
 
