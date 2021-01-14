@@ -179,7 +179,7 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                 .setTag(this)
                 .setPriority(Priority.MEDIUM)
                 .build()
-                .getAsObjectList(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
+                .getAsObject(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
                     @Override
                     public void onResponse(SuccessMessage response) {
                         if (response == null) {
@@ -205,7 +205,7 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                 .setTag(this)
                 .setPriority(Priority.MEDIUM)
                 .build()
-                .getAsObjectList(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
+                .getAsObject(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
                     @Override
                     public void onResponse(SuccessMessage response) {
                         if (response == null) {
@@ -221,6 +221,9 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                     @Override
                     public void onError(ANError anError) {
                         requestCallback.requestFailed(anError.getMessage());
+                        Log.e(TAG, anError.getMessage());
+                        Log.e(TAG, String.valueOf(anError.getErrorCode()));
+
                     }
                 });
     }

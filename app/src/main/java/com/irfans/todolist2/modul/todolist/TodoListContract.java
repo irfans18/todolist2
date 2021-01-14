@@ -15,6 +15,7 @@ import com.irfans.todolist2.utils.RequestCallback;
 public interface TodoListContract {
     interface View extends BaseView<Presenter> {
         void gotoNewTask();
+        void redirectToEdit(Task task);
         void setResult(List<Task> data);
         void requestPrivateTasks(RequestCallback<List<Task>> requestCallback);
         void showFailedMessage(String message);
