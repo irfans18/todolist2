@@ -44,22 +44,6 @@ public class EditTaskPresenter implements EditTaskContract.Presenter{
         view.setResult(task);
     }
 
-    @Override
-    public void finish(Task task) {
-        view.finishTask(task.getId(), new RequestCallback<SuccessMessage>() {
-            @Override
-            public void requestSuccess(SuccessMessage data) {
-                Toast.makeText(activity, data.getMessage(), Toast.LENGTH_SHORT).show();
-                view.showSuccessMessage(data);
-                view.redirectToTaskList();
-            }
-
-            @Override
-            public void requestFailed(String errorMessage) {
-
-            }
-        });
-    }
 
     @Override
     public void delete(Task task) {

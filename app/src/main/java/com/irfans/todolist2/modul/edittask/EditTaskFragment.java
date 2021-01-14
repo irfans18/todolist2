@@ -63,7 +63,6 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
         binding.itemShareIv.setOnClickListener(this);
         binding.updateTaskBtn.setOnClickListener(this);
         binding.deleteTaskBtn.setOnClickListener(this);
-        binding.finishTaskBtn.setOnClickListener(this);
 
         return fragmentView;
     }
@@ -71,7 +70,6 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.updateTask_btn) setBtSaveClick();
-        if (v.getId() == R.id.finishTask_btn) setBtFinishClick();
         if (v.getId() == R.id.deleteTask_btn) setBtDeleteClick();
         if (v.getId() == R.id.item_share_iv) shareTask();
     }
@@ -98,11 +96,6 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
         mPresenter.delete(task);
     }
 
-    private void setBtFinishClick() {
-        mPresenter.finish(task);
-    }
-
-
     public void initCalendar(){
         final Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -116,8 +109,6 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         month = month+1;
-//                        String date = day+"/"+month+"/"+year;
-//                        String dates = date.toString();
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(Calendar.YEAR, year-1);
@@ -154,32 +145,6 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                 .build()
                 .getAsObject(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
 
-                    @Override
-                    public void onResponse(SuccessMessage response) {
-                        if (response == null) {
-                            requestCallback.requestFailed("Null Response");
-                            Log.d("tag", "response null");
-                        } else if (response.isSuccess() == false) {
-                            requestCallback.requestFailed("Cancel Failed");
-                        } else {
-                            requestCallback.requestSuccess(response);
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        requestCallback.requestFailed(anError.getMessage());
-                    }
-                });
-    }
-
-    @Override
-    public void finishTask(int id, RequestCallback<SuccessMessage> requestCallback) {
-        AndroidNetworking.post(myURL.FINISH_TASK_URL + id)
-                .setTag(this)
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsObject(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
                     @Override
                     public void onResponse(SuccessMessage response) {
                         if (response == null) {

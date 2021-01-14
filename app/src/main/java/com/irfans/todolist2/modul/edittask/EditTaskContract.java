@@ -15,7 +15,6 @@ public interface EditTaskContract {
         void redirectToTaskList();
         void setResult(Task data);
         void showSuccessMessage(SuccessMessage data);
-        void finishTask(int id, RequestCallback<SuccessMessage> requestCallback);
         void deleteTask(int id, RequestCallback<SuccessMessage> requestCallback);
         void requestEditTask(Task task, RequestCallback<SuccessMessage> requestCallback);
     }
@@ -23,7 +22,6 @@ public interface EditTaskContract {
     interface Presenter extends BasePresenter {
         void saveData(Task task);
         void loadData(Task task);
-        void finish(Task task);
         void delete(Task task);
     }
 }
