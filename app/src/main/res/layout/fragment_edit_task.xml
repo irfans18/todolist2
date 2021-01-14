@@ -1,161 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/v2dark30"
-    android:orientation="vertical">
+<layout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="198dp"
-        android:background="@color/v2dark60"
-        android:orientation="vertical">
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/v2dark30">
 
-        <TextView
-            android:id="@+id/titlepage_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="Edit Task Detail"
-            android:textColor="@color/v2dark5"
-            android:textSize="32sp" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <View
-            android:id="@+id/border_view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/v2dark5" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="-40dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/bgitemtask"
-        android:orientation="vertical"
-        android:paddingTop="22dp"
-        android:paddingBottom="22dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/addTitle_tv"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Title"
-                android:textColor="@color/v2dark30"
-                android:textSize="18sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/taskTitle_et2"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/bginputtask"
-                android:hint="What will you do?"
-                android:inputType="text"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:importantForAutofill="no" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="198dp"
+                    android:background="@color/v2dark60"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/edit_task_titlepage_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:text="Edit Task Detail"
+                        android:textColor="@color/v2dark5"
+                        android:textSize="32sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:orientation="vertical">
+                    <View
+                        android:id="@+id/edit_task_border_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/v2dark5" />
 
-            <TextView
-                android:id="@+id/addDesc_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Description"
-                android:textColor="@color/v2dark30"
-                android:textSize="18sp" />
+                </LinearLayout>
 
-            <EditText
-                android:id="@+id/taskDesc_et2"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/bginputtask"
-                android:hint="How do you do that?"
-                android:inputType="text"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:importantForAutofill="no"/>
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="-40dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/bgitemtask"
+                    android:orientation="vertical"
+                    android:paddingTop="22dp"
+                    android:paddingBottom="22dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/addDate_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Deadline"
-                android:textColor="@color/v2dark30"
-                android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/edit_task_addTitle_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="Title"
+                            android:textColor="@color/v2dark30"
+                            android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/taskDate_et2"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/bginputtask"
-                android:hint="When will you finish it?"
-                android:inputType="datetime"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:importantForAutofill="no" />
+                        <EditText
+                            android:id="@+id/edit_task_taskTitle_et2"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:background="@drawable/bginputtask"
+                            android:hint="What will you do?"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp" />
 
-        </LinearLayout>
+                    </LinearLayout>
 
-    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/updateTask_btn"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/bgcreatebtn"
-        android:textSize="22sp"
-        android:textColor="@color/v2dark5"
-        android:text="Update Detail"
-        android:textAllCaps="false"/>
+                        <TextView
+                            android:id="@+id/edit_task_addDesc_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="Description"
+                            android:textColor="@color/v2dark30"
+                            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/deleteTask_btn"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/bgdeletebtn"
-        android:textSize="22sp"
-        android:textColor="#AFAFAF"
-        android:text="Delete"
-        android:textAllCaps="false"/>
+                        <EditText
+                            android:id="@+id/edit_task_taskDesc_et2"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:background="@drawable/bginputtask"
+                            android:hint="How do you do that?"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp" />
+                    </LinearLayout>
 
-</LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/edit_task_addDate_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="Deadline"
+                            android:textColor="@color/v2dark30"
+                            android:textSize="18sp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/edit_task_taskDate_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:background="@drawable/bginputtask"
+                            android:paddingTop="15dp"
+                            android:hint="When will you finish it?"
+                            android:inputType="text"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textSize="18dp"/>
+
+                        <ImageView
+                            android:id="@+id/item_share_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="15dp"
+                            android:layout_marginHorizontal="5dp"
+                            android:src="@drawable/ic_baseline_share" />
+                    </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/updateTask_btn"
+                    android:layout_width="230dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/bgcreatebtn"
+                    android:text="Update Detail"
+                    android:textAllCaps="false"
+                    android:textColor="@color/v2dark5"
+                    android:textSize="22sp" />
+
+                <Button
+                    android:id="@+id/finishTask_btn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/bgcreatebtn"
+                    android:text="Check"
+                    android:textAllCaps="true"
+                    android:textColor="@color/v2dark5"
+                    android:textSize="22sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/deleteTask_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/bgdeletebtn"
+                    android:text="Delete"
+                    android:textAllCaps="false"
+                    android:textColor="#AFAFAF"
+                    android:textSize="22sp" />
+
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</layout>

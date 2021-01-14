@@ -9,4 +9,21 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="login_title">Selamat Datang,</string>
+    <string name="register_title">Informasi Akun</string>
+    <string name="register_sub_title">Informasi Pengguna</string>
+
+    <string name="email_text">Email</string>
+    <string name="password_text">Password</string>
+    <string name="login_text">Masuk</string>
+    <string name="register_text">Daftar</string>
+    <string name="username_text">Username</string>
+    <string name="gender_text">Jenis Kelamin : </string>
+    <string name="genderM_text">Pria</string>
+    <string name="genderF_text">Wanita</string>
+    <string name="name_text">Nama Lengkap</string>
+    <string name="telp_text">Nomor Telepon</string>
+    <string name="address_text">Alamat</string>
+    <string name="confirm_password_text">Konfirmasi Password</string>
 </resources>

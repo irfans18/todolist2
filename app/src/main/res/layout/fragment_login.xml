@@ -1,42 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="10dp">
+    android:layout_marginHorizontal="15dp"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/et_email"
+        <TextView
+            android:id="@+id/hotel_name_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter email address..."
-            android:inputType="textPersonName|textEmailAddress" />
+            android:layout_marginVertical="10dp"
+            android:text="@string/login_title"
+            android:textSize="24sp" />
 
-        <EditText
-            android:id="@+id/et_password"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_email_til"
+            android:layout_below="@id/hotel_name_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter password..."
-            android:inputType="textPassword" />
+            android:layout_marginVertical="5dp">
+
+            <EditText
+                android:id="@+id/login_email_et"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_form"
+                android:hint="@string/email_text"
+                android:inputType="textEmailAddress"
+                android:textColor="#707070"
+                android:paddingLeft="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_password_til"
+            android:layout_below="@id/login_email_til"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/login_password_et"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/password_text"
+                android:background="@drawable/bg_form"
+                android:inputType="textPassword"
+                android:textColor="#707070"
+                android:paddingLeft="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/bt_login"
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/login_password_til"
+            android:layout_gravity="center"
+            android:layout_marginVertical="15dp"
+            android:background="@drawable/bg_btn"
+            android:text="@string/login_text"
+            android:textColor="#ffff"
+            android:textSize="20dp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:text="Login"
-            android:textColor="?attr/textWhiteColor" />
+            android:layout_below="@+id/login_btn"
+            android:layout_marginVertical="5dp">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
 
-</RelativeLayout>
-</layout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="80dp"
+                    android:text="Belum Punya Akun?"
+                    android:textColor="#707070"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:onClick="performMove"
+                    android:paddingLeft="10dp"
+                    android:text="@string/register_text"
+                    android:textColor="#5399af"
+                    android:textSize="16dp"
+                    tools:context=".modul.login.LoginActivity" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 30
@@ -9,14 +8,11 @@ android {
         dataBinding true
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
 
     defaultConfig {
         applicationId "com.irfans.todolist2"
-        minSdkVersion 18
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -41,13 +37,13 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc03"
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
-    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.basgeekball:awesome-validation:4.2'
     implementation 'androidx.navigation:navigation-fragment:2.3.2'
     implementation 'androidx.navigation:navigation-ui:2.3.2'

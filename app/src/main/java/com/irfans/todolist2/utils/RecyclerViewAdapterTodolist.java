@@ -1,28 +1,39 @@
 package com.irfans.todolist2.utils;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.irfans.todolist2.R;
 import com.irfans.todolist2.data.model.Task;
 
 public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerViewAdapterTodolist.MyViewHolder> {
-    private static ArrayList<Task> mDataset;
+    private static List<Task> mDataset;
     private static MyClickListener myClickListener;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView tvDate;
         TextView tvTitle;
         TextView tvDescription;
+        ImageView ivItemDone;
+        ImageView ivItemBox;
+
+
         public MyViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (TextView) itemView.findViewById(R.id.tvTodolistTitle);
-            tvDescription = (TextView) itemView.findViewById(R.id.tvTodolistDescription);
+            tvTitle = (TextView) itemView.findViewById(R.id.taskTitle_tv);
+            tvDescription = (TextView) itemView.findViewById(R.id.taskDesc_tv);
+            tvDate = itemView.findViewById(R.id.taskDate_tv);
+            ivItemDone = itemView.findViewById(R.id.item_check_done);
+            ivItemBox = itemView.findViewById(R.id.item_check_box);
+
             itemView.setOnClickListener(this);
         }
 
@@ -33,12 +44,12 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public RecyclerViewAdapterTodolist(ArrayList<Task> myDataset) {
+    public RecyclerViewAdapterTodolist(List<Task> myDataset) {
         mDataset = myDataset;
     }
 
     @Override
-    public com.irfans.todolist2.utils.RecyclerViewAdapterTodolist.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
@@ -48,6 +59,15 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tvTitle.setText(mDataset.get(position).getTitle());
         holder.tvDescription.setText(mDataset.get(position).getDescription());
+        holder.tvDate.setText(mDataset.get(position).getDeadline());
+
+        int check = mDataset.get(position).isChecked();
+        if (check == 1){
+            holder.ivItemDone.setVisibility(View.VISIBLE);
+        }else {
+            holder.ivItemBox.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
