@@ -181,13 +181,20 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                 .build()
                 .getAsObjectList(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
                     @Override
-                    public void onResponse(SuccessMessage data) {
-                        // do anything with response
-                        requestCallback.requestSuccess(data);
+                    public void onResponse(SuccessMessage response) {
+                        if (response == null) {
+                            requestCallback.requestFailed("Null Response");
+                            Log.d("tag", "response null");
+                        } else if (response.isSuccess() == false) {
+                            requestCallback.requestFailed("Cancel Failed");
+                        } else {
+                            requestCallback.requestSuccess(response);
+                        }
                     }
+
                     @Override
                     public void onError(ANError anError) {
-                        // handle error
+                        requestCallback.requestFailed(anError.getMessage());
                     }
                 });
     }
@@ -200,13 +207,20 @@ public class EditTaskFragment extends BaseFragment<EditTaskActivity, EditTaskCon
                 .build()
                 .getAsObjectList(SuccessMessage.class, new ParsedRequestListener<SuccessMessage>() {
                     @Override
-                    public void onResponse(SuccessMessage data) {
-                        // do anything with response
-                        requestCallback.requestSuccess(data);
+                    public void onResponse(SuccessMessage response) {
+                        if (response == null) {
+                            requestCallback.requestFailed("Null Response");
+                            Log.d("tag", "response null");
+                        } else if (response.isSuccess() == false) {
+                            requestCallback.requestFailed("Cancel Failed");
+                        } else {
+                            requestCallback.requestSuccess(response);
+                        }
                     }
+
                     @Override
                     public void onError(ANError anError) {
-                        // handle error
+                        requestCallback.requestFailed(anError.getMessage());
                     }
                 });
     }
