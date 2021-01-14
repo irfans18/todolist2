@@ -73,9 +73,6 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
         mRecyclerView.setLayoutManager(mLayoutManager);
         binding.homeTasksRv.setLayoutManager(mLayoutManager);
         mPresenter.getData();
-//        final ArrayList<Task> data = mPresenter.getDataSet();
-//        mAdapter = new RecyclerViewAdapterTodolist(data);
-//        mRecyclerView.setAdapter(mAdapter);
         setTitle("Todo List");
 
 
@@ -88,9 +85,6 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.home_addTask_btn) gotoNewTask();
-//        if (v.getId() == R.id.home_public_btn) setPublicBtn();
-
-
     }
 
 
@@ -153,7 +147,8 @@ public class TodoListFragment extends BaseFragment<TodoListActivity, TodoListCon
 
     }
 
-    private void redirectToEdit(Task task) {
+    @Override
+    public void redirectToEdit(Task task) {
         Intent intent = new Intent(activity, EditTaskActivity.class);
         intent.putExtra("id", task.getId());
         intent.putExtra("title", task.getTitle());
